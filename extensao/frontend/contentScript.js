@@ -1,116 +1,40 @@
-const SIDEBAR_ID = 'cronus-flow-sidebar';
-const API_URL = IS_LOCAL
-  ? 'http://localhost:3000/v1/analyze'
-  : 'https://api.cronusflow.com/v1/analyze';
-const API_KEY = 'cf_demo_key';
-const IS_LOCAL = true;
-
-/**
- * Toggle da sidebar
- */
-function toggleSidebar() {
-  const existing = document.getElementById(SIDEBAR_ID);
-  if (existing) {
-    existing.remove();
+(() => {
+  if (window.__CRONUS_FLOW_LOADED__) {
+    const existing = document.getElementById('cronus-flow-sidebar');
+    if (existing) {
+      existing.remove();
+    }
     return;
   }
 
-  const iframe = document.createElement('iframe');
-  iframe.id = SIDEBAR_ID;
-  iframe.src = chrome.runtime.getURL('sidebar.html');
-  iframe.style.cssText = `
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 25%;
-    height: 100vh;
-    z-index: 9999;
-    border: none;
-    background: #fff;
-  `;
+  window.__CRONUS_FLOW_LOADED__ = true;
 
-  document.body.appendChild(iframe);
-}
+  const IS_LOCAL = true;
 
-toggleSidebar();
+  const SIDEBAR_ID = 'cronus-flow-sidebar';
+  const API_URL = IS_LOCAL
+    ? 'http://localhost:3000/v1/analyze'
+    : 'https://api.cronusflow.com/v1/analyze';
 
-/**
- * Extrai a última mensagem do CLIENTE
- */
-function getLastClientMessage() {
-  const messages = document.querySelectorAll('[data-testid="msg-container"]');
+  const API_KEY = 'cf_demo_key';
 
-  for (let i = messages.length - 1; i >= 0; i--) {
-    const msg = messages[i];
+  function toggleSidebar() {
+    const iframe = document.createElement('iframe');
+    iframe.id = SIDEBAR_ID;
+    iframe.src = chrome.runtime.getURL('sidebar.html');
+    iframe.style.cssText = `
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 25%;
+      height: 100vh;
+      z-index: 9999;
+      border: none;
+      background: #fff;
+    `;
 
-    // Mensagens recebidas NÃO têm a classe de mensagem enviada
-    const isIncoming = !msg.querySelector('[data-testid="msg-check"]');
-
-    if (isIncoming) {
-      return msg.innerText.trim();
-    }
+    document.body.appendChild(iframe);
   }
 
-  return null;
-}
-
-/**
- * Comunicação segura com a sidebar
- */
-window.addEventListener('message', async (event) => {
-  // Garantia de origem
-  if (event.source !== window) return;
-  if (!event.data || event.data.type !== 'ANALYZE') return;
-
-  const leadMessage = getLastClientMessage();
-
-  if (!leadMessage) {
-    window.postMessage(
-      { type: 'ERROR', message: 'Nenhuma mensagem do cliente encontrada.' },
-      window.location.origin
-    );
-    return;
-  }
-
-  const payload = {
-    leadMessage,
-    channel: 'whatsapp-web',
-    language: 'pt-BR'
-  };
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal
-    });
-
-    clearTimeout(timeout);
-
-    if (!res.ok) {
-      throw new Error(`API_ERROR_${res.status}`);
-    }
-
-    const data = await res.json();
-
-    window.postMessage(
-      { type: 'RESULT', data },
-      window.location.origin
-    );
-  } catch (err) {
-    window.postMessage(
-      {
-        type: 'ERROR',
-        message: 'Não foi possível gerar sugestões agora. Tente novamente.'
-      },
-      window.location.origin
-    );
-  }
-});
+  toggleSidebar();
+})();

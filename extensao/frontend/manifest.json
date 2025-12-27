@@ -5,27 +5,16 @@
   "version": "0.1.0",
   "permissions": [
     "activeTab",
-    "scripting",
-    "storage",
-    "sidePanel"
+    "scripting"
   ],
   "host_permissions": [
-  "https://web.whatsapp.com/*",
-  "http://localhost:3000/*"
-],
+    "https://web.whatsapp.com/*",
+    "http://localhost:3000/*"
+  ],
   "action": {
     "default_title": "Abrir Cronus Flow"
   },
   "background": {
     "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://web.whatsapp.com/*"],
-      "js": ["contentScript.js"]
-    }
-  ],
-  "side_panel": {
-    "default_path": "sidebar.html"
   }
 }

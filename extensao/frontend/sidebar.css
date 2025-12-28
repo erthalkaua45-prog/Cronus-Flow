@@ -3,8 +3,7 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 10px;
-  background-color: #ffffff;
+  background-color: #ff00c8;
 }
 
 #sidebar-container {
@@ -12,8 +11,8 @@ body {
 }
 
 .kauadima3 {
-  background-color: #ffffff;
-  height: 400px;
+  background-color: #ff00c8;
+  height: px;
   font-size: 90px;
 }
 
@@ -28,4 +27,19 @@ p {
 
 #content {
   margin-top: 20px;
+}
+
+.cf-header {
+  background-color: rgb(0, 106, 255);
+}
+.h1-header {
+  margin: 0;
+  padding: 12px;
+  color: white;
+}
+
+#sidebar-container p {
+  margin: 0;
+  padding: 0px 0px 0px 16px;
+  color: white;
 }

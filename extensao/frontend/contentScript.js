@@ -44,3 +44,9 @@
 
 //   toggleSidebar();
 // })();
+// function highlightCard(card) {
+//   document.querySelectorAll(".cf-card")
+//     .forEach(c => c.classList.remove("cf-selected"));
+
+//   card.classList.add("cf-selected");
+// }

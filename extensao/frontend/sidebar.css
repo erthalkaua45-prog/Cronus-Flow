@@ -4,7 +4,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 10px;
-  background-color: #bbdfff;
+  background-color: #ffffff;
 }
 
 #sidebar-container {
@@ -12,9 +12,9 @@ body {
 }
 
 .kauadima3 {
-  background-color: #d34bc5;
+  background-color: #ffffff;
   height: 400px;
-  font-size: 75px;
+  font-size: 90px;
 }
 
 h1 {
